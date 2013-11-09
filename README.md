@@ -3,16 +3,14 @@
 
 Edit `composer.json`.
 
-*composer.json*
-
 ```json
 {
     "require": {
-        "symfony/console": "~2.3"
+        "symfony/filesystem": "~2.0"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*",
-        "ngyuki/composer-shared-installer": "dev-master"
+        "ngyuki/composer-shared-installer": "*"
     },
     "extra": {
         "shared": {
@@ -30,9 +28,7 @@ Run `composer update` command.
 $ composer update
 ```
 
-Create php source file.
-
-*sample.php*
+Create `sample.php`.
 
 ```php
 <?php
@@ -40,12 +36,14 @@ require 'vendor/autoload.php';
 
 use Symfony\Component\Filesystem\Filesystem;
 
-$obj = new Filesystem;
-$ref = new ReflectionObject($obj);
+$ref = new ReflectionClass('Symfony\Component\Filesystem\Filesystem');
+echo $ref->getFileName(), PHP_EOL;
+
+$ref = new ReflectionClass('PHPUnit_Framework_TestCase');
 echo $ref->getFileName(), PHP_EOL;
 ```
 
-Run *sample.php*.
+Run `sample.php`.
 
 ```
 $ php sample.php
