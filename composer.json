@@ -1,0 +1,25 @@
+{
+    "name": "ngyuki/composer-shared-installer",
+    "description": "Install package in Composer to global shared.",
+    "type": "composer-plugin",
+    "keywords": [ "composer", "installer" ],
+    "homepage": "https://github.com/ngyuki/composer-shared-installer",
+    "license": "MIT",
+    "authors": [
+        { "name": "ngyuki", "email": "ngyuki.ts@gmail.com" }
+    ],
+    "autoload": {
+        "psr-0": {
+            "ngyuki\\ComposerSharedInstaller": "src/"
+        }
+    },
+    "extra": {
+        "class": "ngyuki\\ComposerSharedInstaller\\Plugin"
+    },
+    "require": {
+        "composer-plugin-api": "*"
+    },
+    "require-dev": {
+        "composer/composer": "@dev"
+    }
+}
