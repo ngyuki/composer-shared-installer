@@ -9,6 +9,8 @@ class Plugin implements PluginInterface
 {
     public function activate(Composer $composer, IOInterface $io)
     {
+        $io->write("<info>[ComposerSharedInstaller]</info> activate");
+
         // remove library installer
         $manager = $composer->getInstallationManager();
         $libraryInstaller = $manager->getInstaller('library');
