@@ -4,6 +4,7 @@ namespace ngyuki\ComposerSharedInstaller;
 use Composer\Installer\LibraryInstaller;
 use Composer\Package\PackageInterface;
 use Composer\Repository\InstalledRepositoryInterface;
+use Composer\Util\Filesystem;
 
 class Installer extends LibraryInstaller
 {
@@ -211,5 +212,52 @@ class Installer extends LibraryInstaller
             parent::removeCode($package);
             return;
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function generateWindowsProxyCode($bin, $link)
+    {
+        $code = parent::generateWindowsProxyCode($bin, $link);
+        list ($first, $code) = explode("\r\n", $code, 2);
+        $append = "SET COMPOSER_SHARED_AUTOLOAD_PATH=" . escapeshellarg($this->getAutoloadPath());
+        return "$first\r\n$append\r\n$code";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function generateUnixyProxyCode($bin, $link)
+    {
+        $code = parent::generateUnixyProxyCode($bin, $link);
+        list ($first, $code) = explode("\n", $code, 2);
+        $append = "export COMPOSER_SHARED_AUTOLOAD_PATH=" . escapeshellarg($this->getAutoloadPath());
+        return "$first\n$append\n$code";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function initializeVendorDir()
+    {
+        parent::initializeVendorDir();
+        $this->dumpSharedAutoload();
+    }
+
+    protected function getAutoloadPath()
+    {
+        $filesystem = new Filesystem();
+        $config = $this->composer->getConfig();
+        $vendorPath = $filesystem->normalizePath(realpath($config->get('vendor-dir')));
+        return $vendorPath . '/autoload.php';
+    }
+
+    protected function dumpSharedAutoload()
+    {
+        $dst = $this->getSharedDir() . DIRECTORY_SEPARATOR . 'autoload.php';
+        $src = __DIR__ . '/../../../resource/autoload.php';
+        $this->filesystem->ensureDirectoryExists(dirname($dst));
+        copy($src, $dst);
     }
 }
