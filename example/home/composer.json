@@ -1,0 +1,5 @@
+{
+    "require": {
+        "ngyuki/composer-shared-installer": "dev-master"
+    }
+}

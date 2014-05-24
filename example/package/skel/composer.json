@@ -1,0 +1,12 @@
+{
+    "name": "ngyuki/composer-shared-installer-example",
+    "version": "%version%",
+    "autoload": {
+        "psr-4": {
+            "ngyuki\\ComposerSharedInstaller\\Example\\": "src/"
+        }
+    },
+    "bin": [
+        "bin/example"
+    ]
+}

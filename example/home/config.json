@@ -1,0 +1,17 @@
+{
+    "repositories": [
+        {
+            "packagist": false
+        },
+        {
+            "type": "vcs",
+            "url": "file://../../.git"
+        },
+        {
+            "type": "artifact",
+            "url": "../package/zips/"
+        }
+    ],
+    "config": {
+    }
+}
