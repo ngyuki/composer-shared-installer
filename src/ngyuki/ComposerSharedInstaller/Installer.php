@@ -15,12 +15,12 @@ class Installer extends LibraryInstaller
      */
     public function isInstalled(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
-        if (!parent::isInstalled($repo, $package))
+        if (parent::isInstalled($repo, $package) == false)
         {
             return false;
         }
 
-        return $this->isInstalledBinaries($package);
+        return $repo->hasPackage($package) && $this->isInstalledBinaries($package);
     }
 
     /**
@@ -160,18 +160,11 @@ class Installer extends LibraryInstaller
      */
     protected function getComposerHome()
     {
-        $composerHome = getenv('COMPOSER_HOME');
+        $composerHome = $this->composer->getConfig()->get('home');
 
-        if (strlen($composerHome) === 0)
+        if (strlen($composerHome) == 0)
         {
-            $home = getenv('HOME');
-
-            if (strlen($home) === 0)
-            {
-                throw new \RuntimeException('The HOME or COMPOSER_HOME environment variable must be set for composer to run correctly');
-            }
-
-            $composerHome = "$home/.composer";
+            throw new \RuntimeException('Unable get composer home');
         }
 
         return $composerHome;
